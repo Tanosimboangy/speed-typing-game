@@ -29772,7 +29772,7 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"App.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"speedGames.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29780,19 +29780,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireWildcard(require("react"));
+var _react = require("react");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function App() {
+function speedGame() {
   const STARTING_TIME = 10;
   const [text, setText] = (0, _react.useState)("");
-  const [timeRemaining, setTimeRemaining] = (0, _react.useState)(STARTING_TIME); // Create a boolean to set the setTimeRunning to false so that the setTimeRunning will not kick unless the start button is clicked
-
+  const [timeRemaining, setTimeRemaining] = (0, _react.useState)(STARTING_TIME);
   const [isTimeRunning, setTimeRunning] = (0, _react.useState)(false);
   const [wordsNumber, setWordsNumber] = (0, _react.useState)(0);
+  const textArea = (0, _react.useRef)(null);
 
   function handleChange(e) {
     const {
@@ -29805,6 +29801,8 @@ function App() {
     setTimeRunning(true);
     setWordsNumber(0);
     setText("");
+    textArea.current.disabled = false;
+    textArea.current.focus();
   }
 
   function endGame() {
@@ -29820,13 +29818,8 @@ function App() {
       }, 1000);
     } else if (timeRemaining === 0) {
       endGame();
-    } // Adding those two states to begin runnig this useEffect
-
-  }, [timeRemaining, isTimeRunning]); // Counting words
-  // function WordCount(str) { 
-  //     return str.split(" ").length;
-  // }
-  // console.log(WordCount("hello world"));
+    }
+  }, [timeRemaining, isTimeRunning]);
 
   function words(text) {
     const texts = text.trim().split(" ");
@@ -29834,7 +29827,29 @@ function App() {
     return countWords;
   }
 
+  return [text, textArea, timeRemaining, handleChange, startGame, isTimeRunning, wordsNumber];
+}
+
+var _default = speedGame;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _speedGames = _interopRequireDefault(require("./speedGames"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function App() {
+  const [text, textArea, timeRemaining, handleChange, startGame, isTimeRunning, wordsNumber] = (0, _speedGames.default)();
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h1", null, "Typing Game"), /*#__PURE__*/_react.default.createElement("textarea", {
+    ref: textArea,
     disabled: !isTimeRunning,
     value: text,
     onChange: handleChange
@@ -29844,10 +29859,9 @@ function App() {
   }, "Start"), /*#__PURE__*/_react.default.createElement("h1", null, "Word count: ", wordsNumber));
 }
 
-var _default = App; //  https://scrimba.com/p/p7P5Hd/cW8Jdfy
-
+var _default = App;
 exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./speedGames":"speedGames.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -29887,7 +29901,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52339" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51046" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
